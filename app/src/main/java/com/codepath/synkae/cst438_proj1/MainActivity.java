@@ -7,10 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.codepath.synkae.cst438_proj1.db.AppDatabase;
 import com.codepath.synkae.cst438_proj1.db.DAO;
@@ -23,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREFERENCES_KEY = "preferencesKey";
 
     private com.codepath.synkae.cst438_proj1.db.DAO DAO;
-    private int mUserId = -1;
-    private SharedPreferences mPreferences = null;
-    private User mUser;
+    private int tUserId = -1; //user identification to pass around
+    private SharedPreferences sPreferences = null;
+    private User tUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         getDatabase();
         checkForUser();
-        addUserToPreference(mUserId);
-        loginUser(mUserId);
+        addUserToPreference(tUserId);
+        loginUser(tUserId);
     }
 
     protected void onResume() {
@@ -58,27 +56,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkForUser() {
         //do we have user in intent?
-        mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
+        tUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
 
         //in preferences?
-        if (mUserId != -1) {
+        if (tUserId != -1) {
             return;
         }
 
-        if (mPreferences == null) {
+        if (sPreferences == null) {
             getPrefs();
         }
-        mUserId = mPreferences.getInt(USER_ID_KEY, -1);
+        tUserId = sPreferences.getInt(USER_ID_KEY, -1);
 
         //any at all?
-        if (mUserId != -1) {
+        if (tUserId != -1) {
             return;
         }
         List<User> users = DAO.getAllUsers();
         if (users.size() <= 0) {
-            User TstAdmin = new User("Admin", "pass");
-            User TstUser = new User("User", "pass");
-            DAO.insert(TstAdmin, TstUser);
+            User TstUser = new User("user", "pass");
+            DAO.insert(TstUser);
         }
 
         Intent intent = LoginActivity.intentFactory(this);
@@ -86,19 +83,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getPrefs() {
-        mPreferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+        sPreferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
     }
 
     private void addUserToPreference(int userId) {
-        if (mPreferences == null) {
+        if (sPreferences == null) {
             getPrefs();
         }
-        SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences.Editor editor = sPreferences.edit();
         editor.putInt(USER_ID_KEY, userId);
     }
 
     private void loginUser(int userId) {
-        mUser = DAO.getUserByUserId(userId);
+        tUser = DAO.getUserByUserId(userId);
         invalidateOptionsMenu();
     }
 
@@ -127,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     private void logoutUser() {
         clearUserFromIntent();
         clearUserFromPref();
-        mUserId = -1;
+        tUserId = -1;
         checkForUser();
 
     }
