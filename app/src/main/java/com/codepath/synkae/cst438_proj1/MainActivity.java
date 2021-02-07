@@ -1,8 +1,5 @@
 package com.codepath.synkae.cst438_proj1;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +9,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+
 import com.codepath.synkae.cst438_proj1.db.AppDatabase;
-import com.codepath.synkae.cst438_proj1.db.DAO;
 
 import java.util.List;
 
@@ -28,12 +27,13 @@ public class MainActivity extends AppCompatActivity {
     private User tUser;
 
     private Button viewList;
+    private Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        searchButton = findViewById(R.id.searchButton);
         getDatabase();
         checkForUser();
         addUserToPreference(tUserId);
@@ -142,6 +142,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = SearchActivity.searchActivityIntent(v.getContext());
                 startActivity(intent);
             }
         });
