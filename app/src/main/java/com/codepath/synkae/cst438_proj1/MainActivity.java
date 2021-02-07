@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.codepath.synkae.cst438_proj1.db.AppDatabase;
 import com.codepath.synkae.cst438_proj1.db.DAO;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sPreferences = null;
     private User tUser;
 
+    private Button viewList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         checkForUser();
         addUserToPreference(tUserId);
         loginUser(tUserId);
+
+        menuDisplay();
     }
 
     protected void onResume() {
@@ -126,6 +132,20 @@ public class MainActivity extends AppCompatActivity {
         clearUserFromPref();
         tUserId = -1;
         checkForUser();
+
+    }
+
+    private void menuDisplay() {
+        Button viewListButton = findViewById(R.id.viewListButton);
+
+        viewListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 }
