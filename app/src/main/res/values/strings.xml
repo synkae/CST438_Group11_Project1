@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">cst438_proj1</string>
+    <string name="loginButton">Login</string>
+    <string name="logOut">Log Out</string>
+    <string name="createAccButton">Create Account</string>
+    <string name="searchButton">Search</string>
+    <string name="viewListButton">View List</string>
+
 </resources>
