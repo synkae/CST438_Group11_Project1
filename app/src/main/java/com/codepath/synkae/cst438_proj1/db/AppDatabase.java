@@ -1,5 +1,8 @@
 package com.codepath.synkae.cst438_proj1.db;
 
+//import android.arch.persistence.room.Database;
+//import android.arch.persistence.room.RoomDatabase;
+
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
