@@ -6,12 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.List;
+import com.codepath.synkae.cst438_proj1.models.Categories;
+import com.codepath.synkae.cst438_proj1.models.Category;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +29,7 @@ public class SearchActivity extends AppCompatActivity {
     private Button btnSearch;
     private static final String TAG = "SearchActivity";
     private static final String BASE_URL = "https://remotive.io/";
+    private ArrayList<Category> categoryArrayList = new ArrayList<Category>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,25 @@ public class SearchActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         etKeyword = findViewById(R.id.etKeyword);
         btnSearch = findViewById(R.id.btnSearch);
+        loadCategories();
+    }
+
+    /*
+     * Loads the dropdown menu
+     */
+    private void loadDropDown() {
+        ArrayList<String> categories = new ArrayList<String>();
+        for (Category cat:categoryArrayList){
+            categories.add(cat.getName());
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
+    }
+    /*
+     * Calls the RemotiveAPI and stores the job categories into ArrayList<Category> categoryArrayList
+     */
+    private void loadCategories(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://remotive.io/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -47,7 +71,13 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 Log.d(TAG, "onResponse: Server Response: " + response.toString());
                 Log.d(TAG, "onResponse: Server Response: " + response.body().toString());
-                //Categories cat = response.body();
+                categoryArrayList = response.body().getCategoryList();
+                //for testing purposes
+                for (Category cat : response.body().getCategoryList()){
+                    Log.d(TAG, "Name: " + cat.getName() + " id: " + cat.getId());
+                    //categoryArrayList.add(new Category(cat.getId(), cat.getName(), cat.getSlug()));
+                }
+                loadDropDown();
             }
 
             @Override
