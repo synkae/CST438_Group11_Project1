@@ -1,5 +1,7 @@
 package com.codepath.synkae.cst438_proj1.models;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Category {
@@ -24,5 +26,11 @@ public class Category {
         this.id = id;
         this.name = name;
         this.slug = slug;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
