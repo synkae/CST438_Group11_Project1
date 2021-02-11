@@ -5,5 +5,25 @@
     <string name="createAccButton">Create Account</string>
     <string name="searchButton">Search</string>
     <string name="viewListButton">View List</string>
+    <string name="profileButton">View/Edit Profile</string>
+    <string name="updatePro">Update Profile</string>
+    <string name="goBack">Go Back</string>
+    <string name="switch1">Software Development</string>
+    <string name="switch2">Customer Service</string>
+    <string name="switch3">Design</string>
+    <string name="switch4">Marketing</string>
+    <string name="switch5">Sales</string>
+    <string name="switch6">Product</string>
+    <string name="switch7">Business</string>
+    <string name="switch8">Data</string>
+    <string name="switch9">DevOps / Sysadmin</string>
+    <string name="switch10">Finance / Legal</string>
+    <string name="switch11">Human Resources</string>
+    <string name="switch12">QA</string>
+    <string name="switch13">Teaching</string>
+    <string name="switch14">Writing</string>
+    <string name="switch15">Medical / Health</string>
+    <string name="switch16">All others</string>
+
 
 </resources>

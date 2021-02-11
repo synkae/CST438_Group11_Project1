@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.codepath.synkae.cst438_proj1.User;
 
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     public static final String DB_NAME = "DATABASE";
