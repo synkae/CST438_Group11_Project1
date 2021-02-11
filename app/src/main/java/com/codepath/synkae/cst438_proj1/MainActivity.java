@@ -26,14 +26,16 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sPreferences = null;
     private User tUser;
 
-    private Button viewList;
+    private Button viewList; //Not hooked up yet!!!
     private Button searchButton;
+    private Button profileButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         searchButton = findViewById(R.id.searchButton);
+        profileButton = findViewById(R.id.profileButton);
         getDatabase();
         checkForUser();
         addUserToPreference(tUserId);
@@ -46,16 +48,16 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    public static Intent intentFactory(Context context, int userId) {
+    public static Intent mainActivityIntent(Context context, int userId) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(USER_ID_KEY, userId);
-
         return intent;
     }
 
     private void getDatabase() {
         DAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME)
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build()
                 .getDAO();
     }
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             DAO.insert(TstUser);
         }
 
-        Intent intent = LoginActivity.intentFactory(this);
+        Intent intent = LoginActivity.loginActivityIntent(this);
         startActivity(intent);
     }
 
@@ -138,10 +140,11 @@ public class MainActivity extends AppCompatActivity {
     private void menuDisplay() {
         Button viewListButton = findViewById(R.id.viewListButton);
 
-        viewListButton.setOnClickListener(new View.OnClickListener() {
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                intent.putExtra(USER_ID_KEY, tUserId);
                 startActivity(intent);
             }
         });

@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(!validatePassword()){
                         toastMaker("Invalid password");
                     }else{
-                        Intent intent = MainActivity.intentFactory(getApplicationContext(), mUser.getUserId());
+                        Intent intent = MainActivity.mainActivityIntent(getApplicationContext(), mUser.getUserId());
                         startActivity(intent);
                     }
                 }
@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                 .getDAO();
     }
 
-    public static Intent intentFactory(Context context){
+    public static Intent loginActivityIntent(Context context){
         return new Intent(context, LoginActivity.class);
     }
 

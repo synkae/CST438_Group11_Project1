@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3b0af29debf9bef843e8f1a384d60329",
+    "identityHash": "8dbead089a6a0f761015524362edfc3b",
     "entities": [
       {
         "tableName": "USER_TABLE",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `password` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT, `password` TEXT, `category` TEXT, `company_name` TEXT)",
         "fields": [
           {
             "fieldPath": "userId",
@@ -25,6 +25,18 @@
             "columnName": "password",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "company_name",
+            "columnName": "company_name",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -37,9 +49,10 @@
         "foreignKeys": []
       }
     ],
+    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3b0af29debf9bef843e8f1a384d60329\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8dbead089a6a0f761015524362edfc3b')"
     ]
   }
 }

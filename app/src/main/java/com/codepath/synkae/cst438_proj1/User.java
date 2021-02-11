@@ -13,6 +13,8 @@ public class User {
 
     private String username;
     private String password;
+    private String category;
+    private String company_name;
 
     public User(String username, String password) {
         this.username = username;
@@ -41,5 +43,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
     }
 }
