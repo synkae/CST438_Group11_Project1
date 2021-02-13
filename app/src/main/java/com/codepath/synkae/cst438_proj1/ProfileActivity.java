@@ -59,7 +59,12 @@ public class ProfileActivity extends AppCompatActivity {
         goBackBtn = findViewById(R.id.goBackButton);
         updatePro = findViewById(R.id.upProButton);
 
-        goBackBtn.setOnClickListener(v -> finish());
+        goBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileActivity.this.finish();
+            }
+        });
         loadCategories();
 
         dropDownJobCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -79,62 +84,64 @@ public class ProfileActivity extends AppCompatActivity {
         tUserId = getIntent().getIntExtra("userIdKey", -1);
         tUser = DAO.getUserByUserId(tUserId);
 
-        updatePro.setOnClickListener(v -> {
-            tUser.setCompany_name(compUserInput.getText().toString());
-            tUser.setCategory(tCat);
-            DAO.update(tUser);
-            compSelected.setText(tUser.getCompany_name());
-            switch (tUser.getCategory())
-            {
-                case "software-dev":
-                    jCatSelected.setText(R.string.switch1);
-                    break;
-                case "customer-support":
-                    jCatSelected.setText(R.string.switch2);
-                    break;
-                case "design":
-                    jCatSelected.setText(R.string.switch3);
-                    break;
-                case "marketing":
-                    jCatSelected.setText(R.string.switch4);
-                    break;
-                case "sales":
-                    jCatSelected.setText(R.string.switch5);
-                    break;
-                case "product":
-                    jCatSelected.setText(R.string.switch6);
-                    break;
-                case "business":
-                    jCatSelected.setText(R.string.switch7);
-                    break;
-                case "data":
-                    jCatSelected.setText(R.string.switch8);
-                    break;
-                case "devops":
-                    jCatSelected.setText(R.string.switch9);
-                    break;
-                case "finance-legal":
-                    jCatSelected.setText(R.string.switch10);
-                    break;
-                case "hr":
-                    jCatSelected.setText(R.string.switch11);
-                    break;
-                case "qa":
-                    jCatSelected.setText(R.string.switch12);
-                    break;
-                case "teaching":
-                    jCatSelected.setText(R.string.switch13);
-                    break;
-                case "writing":
-                    jCatSelected.setText(R.string.switch14);
-                    break;
-                case "medical-health":
-                    jCatSelected.setText(R.string.switch15);
-                    break;
-                case "all-others":
-                    jCatSelected.setText(R.string.switch16);
-                    break;
+        updatePro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tUser.setCompany_name(compUserInput.getText().toString());
+                tUser.setCategory(tCat);
+                DAO.update(tUser);
+                compSelected.setText(tUser.getCompany_name());
+                switch (tUser.getCategory()) {
+                    case "software-dev":
+                        jCatSelected.setText(R.string.switch1);
+                        break;
+                    case "customer-support":
+                        jCatSelected.setText(R.string.switch2);
+                        break;
+                    case "design":
+                        jCatSelected.setText(R.string.switch3);
+                        break;
+                    case "marketing":
+                        jCatSelected.setText(R.string.switch4);
+                        break;
+                    case "sales":
+                        jCatSelected.setText(R.string.switch5);
+                        break;
+                    case "product":
+                        jCatSelected.setText(R.string.switch6);
+                        break;
+                    case "business":
+                        jCatSelected.setText(R.string.switch7);
+                        break;
+                    case "data":
+                        jCatSelected.setText(R.string.switch8);
+                        break;
+                    case "devops":
+                        jCatSelected.setText(R.string.switch9);
+                        break;
+                    case "finance-legal":
+                        jCatSelected.setText(R.string.switch10);
+                        break;
+                    case "hr":
+                        jCatSelected.setText(R.string.switch11);
+                        break;
+                    case "qa":
+                        jCatSelected.setText(R.string.switch12);
+                        break;
+                    case "teaching":
+                        jCatSelected.setText(R.string.switch13);
+                        break;
+                    case "writing":
+                        jCatSelected.setText(R.string.switch14);
+                        break;
+                    case "medical-health":
+                        jCatSelected.setText(R.string.switch15);
+                        break;
+                    case "all-others":
+                        jCatSelected.setText(R.string.switch16);
+                        break;
 
+                }
             }
         });
 

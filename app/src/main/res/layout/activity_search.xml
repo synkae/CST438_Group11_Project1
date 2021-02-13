@@ -21,6 +21,13 @@
         android:ems="10"
         android:hint="Keyword"
         android:inputType="textPersonName" />
+    <EditText
+        android:id="@+id/etCompany"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Company"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/btnSearch"

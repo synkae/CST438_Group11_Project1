@@ -2,9 +2,10 @@ package com.codepath.synkae.cst438_proj1.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Job {
+public class Job implements Serializable {
     @SerializedName("id")
     private int id;
 
@@ -13,6 +14,9 @@ public class Job {
 
     @SerializedName("title")
     private String title;
+
+    @SerializedName("category")
+    private String category;
 
     @SerializedName("company_name")
     private String companyName;
@@ -32,7 +36,7 @@ public class Job {
     @SerializedName("salary")
     private String salary;
 
-    @SerializedName("Description")
+    @SerializedName("description")
     private String description;
 
     @SerializedName("company_logo_url")
@@ -80,5 +84,9 @@ public class Job {
 
     public String getCompany_logo_url() {
         return company_logo_url;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

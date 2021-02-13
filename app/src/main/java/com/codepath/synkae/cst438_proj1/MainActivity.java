@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = SearchActivity.searchActivityIntent(v.getContext());
+                intent.putExtra(USER_ID_KEY, tUserId);
                 startActivity(intent);
             }
         });

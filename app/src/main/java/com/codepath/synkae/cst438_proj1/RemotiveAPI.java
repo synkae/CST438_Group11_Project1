@@ -15,7 +15,9 @@ public interface RemotiveAPI {
     Call<JobSearch> searchJobs(
             @Query("category") String category,
             @Query("search") String search,
+            @Query("company") String company,
             @Query("limit") Integer limit
     );
+    
 
 }
