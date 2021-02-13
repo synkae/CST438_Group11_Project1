@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".JobDetailActivity"></activity>
+        <activity android:name=".SavedJobsActivity"></activity>
         <activity android:name=".SearchActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
