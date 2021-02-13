@@ -3,6 +3,7 @@ package com.codepath.synkae.cst438_proj1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.codepath.synkae.cst438_proj1.db.AppDatabase;
+import com.codepath.synkae.cst438_proj1.db.DAO;
 import com.codepath.synkae.cst438_proj1.models.Categories;
 import com.codepath.synkae.cst438_proj1.models.Category;
 import com.codepath.synkae.cst438_proj1.models.Job;
@@ -28,13 +31,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity{
     private Spinner spinner;
     private EditText etKeyword;
     private Button btnSearch;
+    private EditText etCompany;
+    private int tUserId = -1; //user identification to pass around
+    private DAO DAO;
+    private User tUser;
     private static final String TAG = "SearchActivity";
     private static final String BASE_URL = "https://remotive.io/";
     private ArrayList<Category> categoryArrayList = new ArrayList<Category>();
+    ArrayAdapter<Category> spinnerAdapter;
     private RecyclerView rvJobs;
     private JobRecycleAdapter adapter;
 
@@ -46,9 +54,15 @@ public class SearchActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         etKeyword = findViewById(R.id.etKeyword);
         btnSearch = findViewById(R.id.btnSearch);
+        etCompany = findViewById(R.id.etCompany);
         rvJobs = findViewById(R.id.rvJobs);
+        //get user id and load the user
+        getDatabase();
+        tUserId = getIntent().getIntExtra("userIdKey", -1);
+        tUser = DAO.getUserByUserId(tUserId);
         //loads all job categories from API endpoint to spinner
         loadCategories();
+
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +72,14 @@ public class SearchActivity extends AppCompatActivity {
                 }
                 String keyword = etKeyword.getText().toString();
                 Category c = (Category)spinner.getSelectedItem();
+                String company = etCompany.getText().toString();
                 String category = c.getSlug();
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://remotive.io/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 RemotiveAPI remotiveAPI = retrofit.create(RemotiveAPI.class);
-                Call<JobSearch> call = remotiveAPI.searchJobs(keyword, category, 20);
+                Call<JobSearch> call = remotiveAPI.searchJobs(keyword, category, company,20);
                 call.enqueue(new Callback<JobSearch>() {
                     @Override
                     public void onResponse(Call<JobSearch> call, Response<JobSearch> response) {
@@ -91,6 +106,25 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+    private void loadFromUserProfile() {
+        Log.d(TAG, "Username: " + tUser.getUsername() + " company: " + tUser.getCompany_name() + " category: " + tUser.getCategory());
+        String company = tUser.getCompany_name();
+        etCompany.setText(company);
+        String category = tUser.getCategory();
+        if (tUser.getCategory().isEmpty()){
+            return;
+        }
+        Category temp = null;
+        for (Category c : categoryArrayList){
+            if(c.getSlug().equals(category)){
+                temp = c;
+            }
+        }
+        int pos = spinnerAdapter.getPosition(temp);
+        spinner.setSelection(pos);
+    }
+
+
     private void initRecyclerView(ArrayList<Job> jobList){
         adapter = new JobRecycleAdapter(jobList, this);
         rvJobs.setHasFixedSize(true);
@@ -98,17 +132,18 @@ public class SearchActivity extends AppCompatActivity {
         rvJobs.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    private void getDatabase() {
+        DAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME)
+                .allowMainThreadQueries()
+                .build()
+                .getDAO();
+    }
+
     /*
      * Loads the dropdown menu
      */
     private void loadDropDown() {
-        /*
-        ArrayList<String> categories = new ArrayList<String>();
-        for (Category cat:categoryArrayList){
-            categories.add(cat.getName());
-        }
-         */
-        ArrayAdapter<Category> spinnerAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_item, categoryArrayList);
+        spinnerAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_item, categoryArrayList);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
     }
@@ -137,6 +172,7 @@ public class SearchActivity extends AppCompatActivity {
                     Log.d(TAG, "Name: " + cat.getName() + " id: " + cat.getId());
                 }
                 loadDropDown();
+                loadFromUserProfile();
             }
 
             @Override
@@ -156,4 +192,5 @@ public class SearchActivity extends AppCompatActivity {
         Intent intent = new Intent(context, SearchActivity.class);
         return intent;
     }
+
 }

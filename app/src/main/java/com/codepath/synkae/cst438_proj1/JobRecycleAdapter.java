@@ -1,11 +1,13 @@
 package com.codepath.synkae.cst438_proj1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,16 +38,25 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
     @Override
     public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
         Job job = jobArrayList.get(position);
-        /*
-        if (!job.getCompany_logo_url().isEmpty()){
+        if (job.getCompany_logo_url() != null){
             Glide.with(mContext)
                     .asBitmap()
                     .load(job.getCompany_logo_url())
                     .into(holder.ivLogo);
         }
-        */
+        else{
+            holder.ivLogo.setImageResource(R.drawable.ic_launcher_background);
+        }
         holder.tvTitle.setText(job.getTitle());
         holder.tvCompany.setText(job.getCompanyName());
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, JobDetailActivity.class);
+                intent.putExtra("job", job);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -58,12 +69,16 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
         public TextView tvTitle;
         public TextView tvCompany;
         public Button btnAdd;
+        public RelativeLayout parentLayout;
         public JobViewHolder(@NonNull View itemView) {
             super(itemView);
             ivLogo = itemView.findViewById(R.id.ivLogo);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvCompany = itemView.findViewById(R.id.tvCompany);
             btnAdd = itemView.findViewById(R.id.btnAdd);
+            parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
+
+
 }
