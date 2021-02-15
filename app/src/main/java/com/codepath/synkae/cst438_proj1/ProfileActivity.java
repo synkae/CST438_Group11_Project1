@@ -171,13 +171,9 @@ public class ProfileActivity extends AppCompatActivity {
                 .build();
         RemotiveAPI remotiveAPI = retrofit.create(RemotiveAPI.class);
         Call<Categories> call = remotiveAPI.getCategories();
-        Log.d(TAG, call.toString());
         call.enqueue(new Callback<Categories>() {
             @Override
             public void onResponse(Call<Categories> call, Response<Categories> response) {
-                if(!response.isSuccessful()){
-                    Log.i(TAG, response.toString());
-                }
                 for (Category cat : response.body().getCategoryList()){
                     dropDownList.add(new SpinnerCatSplit(cat.getName(), cat.getSlug()));
                 }
@@ -186,7 +182,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Categories> call, Throwable t) {
-                Log.e(TAG, t.toString());
                 Toast.makeText(ProfileActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
             }
         });

@@ -34,7 +34,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SearchActivity extends AppCompatActivity{
     private Spinner spinner;
     private EditText etKeyword;
-    private Button btnSearch;
+    private Button btnSearchKey;
+    private Button btnSearchCat;
+    private Button btnSearchCom;
     private EditText etCompany;
     private int tUserId = -1; //user identification to pass around
     private DAO DAO;
@@ -53,7 +55,9 @@ public class SearchActivity extends AppCompatActivity{
 
         spinner = findViewById(R.id.spinner);
         etKeyword = findViewById(R.id.etKeyword);
-        btnSearch = findViewById(R.id.btnSearch);
+        btnSearchKey = findViewById(R.id.btnSearchKey);
+        btnSearchCat = findViewById(R.id.btnSearchCat);
+        btnSearchCom = findViewById(R.id.btnSearchCom);
         etCompany = findViewById(R.id.etCompany);
         rvJobs = findViewById(R.id.rvJobs);
         //get user id and load the user
@@ -63,45 +67,36 @@ public class SearchActivity extends AppCompatActivity{
         //loads all job categories from API endpoint to spinner
         loadCategories();
 
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+        btnSearchKey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etKeyword.getText().toString().isEmpty() || spinner.getSelectedItem().toString().isEmpty()){
-                    Toast.makeText(v.getContext(), "Some input is empty!", Toast.LENGTH_SHORT).show();
+                if (etKeyword.getText().toString().isEmpty()){
+                    Toast.makeText(v.getContext(), "Keyword field is empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String keyword = etKeyword.getText().toString();
-                Category c = (Category)spinner.getSelectedItem();
-                String company = etCompany.getText().toString();
-                String category = c.getSlug();
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://remotive.io/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                RemotiveAPI remotiveAPI = retrofit.create(RemotiveAPI.class);
-                Call<JobSearch> call = remotiveAPI.searchJobs(keyword, category, company,20);
-                call.enqueue(new Callback<JobSearch>() {
-                    @Override
-                    public void onResponse(Call<JobSearch> call, Response<JobSearch> response) {
-                        if(!response.isSuccessful()){
-                            Log.i(TAG, response.toString());
-                        }
-                        Log.d(TAG, "onResponse: Server Response: " + response.toString());
-                        Log.d(TAG, "onResponse: Server Response: " + response.body().toString());
-                        ArrayList<Job> jobsList = response.body().getJobsList();
-                        Log.d(TAG, "PRINTING ALL JOBS FROM API");
-                        for(Job j : jobsList){
-                            Log.d(TAG, "id: " + j.getId() + " url: " + j.getUrl() + " title: " + j.getTitle() + " company name: " + j.getCompanyName());
-                        }
-                        initRecyclerView(jobsList);
-                    }
+                searchGo("key");
+            }
+        });
 
-                    @Override
-                    public void onFailure(Call<JobSearch> call, Throwable t) {
-                        Log.e(TAG, t.toString());
-                        Toast.makeText(SearchActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        btnSearchCat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (spinner.getSelectedItem().toString().isEmpty()){
+                    Toast.makeText(v.getContext(), "No category is selected!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                searchGo("cat");
+            }
+        });
+
+        btnSearchCom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etCompany.getText().toString().isEmpty()){
+                    Toast.makeText(v.getContext(), "Company field is empty!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                searchGo("com");
             }
         });
     }
@@ -193,4 +188,47 @@ public class SearchActivity extends AppCompatActivity{
         return intent;
     }
 
+    public void searchGo(String s){
+        String keyword = etKeyword.getText().toString();
+        Category c = (Category)spinner.getSelectedItem();
+        String company = etCompany.getText().toString();
+        String category = c.getSlug();
+        Call<JobSearch> call;
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://remotive.io/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RemotiveAPI remotiveAPI = retrofit.create(RemotiveAPI.class);
+        if(s.equals("cat")) {
+            call = remotiveAPI.searchJobsCategory(category, 20);
+        }
+        else if(s.equals("com")){
+            call = remotiveAPI.searchJobsCompany(company, 20);
+        }
+        else{
+            call = remotiveAPI.searchJobsKeyword(keyword, 20);
+        }
+        call.enqueue(new Callback<JobSearch>() {
+            @Override
+            public void onResponse(Call<JobSearch> call, Response<JobSearch> response) {
+                if (!response.isSuccessful()) {
+                    Log.i(TAG, response.toString());
+                }
+                Log.d(TAG, "onResponse: Server Response: " + response.toString());
+                Log.d(TAG, "onResponse: Server Response: " + response.body().toString());
+                ArrayList<Job> jobsList = response.body().getJobsList();
+                Log.d(TAG, "PRINTING ALL JOBS FROM API");
+                for (Job j : jobsList) {
+                    Log.d(TAG, "id: " + j.getId() + " url: " + j.getUrl() + " title: " + j.getTitle() + " company name: " + j.getCompanyName());
+                }
+                initRecyclerView(jobsList);
+            }
+
+            @Override
+            public void onFailure(Call<JobSearch> call, Throwable t) {
+                Log.e(TAG, t.toString());
+                Toast.makeText(SearchActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
