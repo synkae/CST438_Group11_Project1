@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sPreferences = null;
     private User tUser;
 
-    private Button viewList; //Not hooked up yet!!!
+    private Button viewListButton;
     private Button searchButton;
     private Button profileButton;
 
@@ -36,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         searchButton = findViewById(R.id.searchButton);
         profileButton = findViewById(R.id.profileButton);
+        viewListButton = findViewById(R.id.viewListButton);
         getDatabase();
         checkForUser();
         addUserToPreference(tUserId);
         loginUser(tUserId);
-
         menuDisplay();
     }
 
@@ -153,10 +153,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = SearchActivity.searchActivityIntent(v.getContext());
+                intent.putExtra(USER_ID_KEY, tUserId);
                 startActivity(intent);
             }
         });
 
+        viewListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SavedJobsActivity.class);
+                startActivity(intent);
+            }
+
+        });
 
     }
 }
