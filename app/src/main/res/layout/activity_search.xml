@@ -30,10 +30,22 @@
         android:inputType="textPersonName" />
 
     <Button
-        android:id="@+id/btnSearch"
+        android:id="@+id/btnSearchKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search" />
+        android:text="Search by Keyword" />
+
+    <Button
+        android:id="@+id/btnSearchCat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search by Category" />
+
+    <Button
+        android:id="@+id/btnSearchCom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search by Company" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvJobs"
