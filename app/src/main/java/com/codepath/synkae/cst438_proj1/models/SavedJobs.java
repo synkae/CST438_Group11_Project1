@@ -1,4 +1,4 @@
-package com.codepath.synkae.cst438_proj1;
+package com.codepath.synkae.cst438_proj1.models;
 
 import androidx.room.*;
 
