@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.codepath.synkae.cst438_proj1.db.AppDatabase;
 import com.codepath.synkae.cst438_proj1.db.DAO;
+import com.codepath.synkae.cst438_proj1.db.SavedJobDao;
 import com.codepath.synkae.cst438_proj1.models.Categories;
 import com.codepath.synkae.cst438_proj1.models.Category;
 import com.codepath.synkae.cst438_proj1.models.Job;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SearchActivity extends AppCompatActivity{
+public class SearchActivity extends AppCompatActivity {
     private Spinner spinner;
     private EditText etKeyword;
     private Button btnSearchKey;
@@ -40,6 +41,7 @@ public class SearchActivity extends AppCompatActivity{
     private EditText etCompany;
     private int tUserId = -1; //user identification to pass around
     private DAO DAO;
+    private SavedJobDao savedJobDao;
     private User tUser;
     private static final String TAG = "SearchActivity";
     private static final String BASE_URL = "https://remotive.io/";
@@ -121,7 +123,7 @@ public class SearchActivity extends AppCompatActivity{
 
 
     private void initRecyclerView(ArrayList<Job> jobList){
-        adapter = new JobRecycleAdapter(jobList, this);
+        adapter = new JobRecycleAdapter(jobList, this, tUserId, savedJobDao);
         rvJobs.setHasFixedSize(true);
         rvJobs.setAdapter(adapter);
         rvJobs.setLayoutManager(new LinearLayoutManager(this));
@@ -231,4 +233,6 @@ public class SearchActivity extends AppCompatActivity{
             }
         });
     }
+
+
 }
