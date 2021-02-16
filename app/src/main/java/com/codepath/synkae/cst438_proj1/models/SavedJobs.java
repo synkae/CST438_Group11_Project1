@@ -2,28 +2,19 @@ package com.codepath.synkae.cst438_proj1.models;
 
 import androidx.room.*;
 
-@Entity(tableName = "savedjobs")
+import com.codepath.synkae.cst438_proj1.db.AppDatabase;
+
+@Entity(tableName = AppDatabase.SAVEDJOBS_TABLE)
 public class SavedJobs {
 
     @PrimaryKey(autoGenerate = true)
     private int mSaveJId;
 
-    @ColumnInfo(name = "userId")
     private String mUserId;
-
-    @ColumnInfo(name = "title")
     private String mTitle;
-
-    @ColumnInfo(name = "companyName")
     private String mCompanyName;
-
-    @ColumnInfo(name = "jobType")
     private String mJobType;
-
-    @ColumnInfo(name = "description")
     private String mDescription;
-
-    @ColumnInfo(name = "salary")
     private String mSalary;
 
 
