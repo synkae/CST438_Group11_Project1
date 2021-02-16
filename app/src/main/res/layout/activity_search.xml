@@ -21,12 +21,31 @@
         android:ems="10"
         android:hint="Keyword"
         android:inputType="textPersonName" />
-
-    <Button
-        android:id="@+id/btnSearch"
+    <EditText
+        android:id="@+id/etCompany"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search" />
+        android:ems="10"
+        android:hint="Company"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btnSearchKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search by Keyword" />
+
+    <Button
+        android:id="@+id/btnSearchCat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search by Category" />
+
+    <Button
+        android:id="@+id/btnSearchCom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search by Company" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvJobs"

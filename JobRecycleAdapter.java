@@ -1,5 +1,6 @@
 package com.codepath.synkae.cst438_proj1;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,24 +13,31 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
+import com.codepath.synkae.cst438_proj1.db.SavedJobDao;
 import com.codepath.synkae.cst438_proj1.models.Job;
+import com.codepath.synkae.cst438_proj1.models.SavedJobs;
 
 import java.util.ArrayList;
 
 public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.JobViewHolder> {
     private ArrayList<Job> jobArrayList;
     private Context mContext;
+    private int tUserId;
+    private SavedJobDao savedJobDao;
 
-    public JobRecycleAdapter(ArrayList<Job> jobArrayList, Context context){
+
+    public JobRecycleAdapter(ArrayList<Job> jobArrayList, Context context, int tUserId, SavedJobDao savedJobDao){
         this.jobArrayList = jobArrayList;
         mContext = context;
+        this.tUserId = tUserId;
+        this.savedJobDao = savedJobDao;
     }
 
     @NonNull
     @Override
     public JobViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_job, parent,false);
         JobViewHolder jobEVH = new JobViewHolder(view);
         return jobEVH;
@@ -49,9 +57,12 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
         }
         holder.tvTitle.setText(job.getTitle());
         holder.tvCompany.setText(job.getCompanyName());
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Job job = jobArrayList.get(position);
+                SavedJobs sj = new SavedJobs(tUserId, job.getTitle(), job.getCompanyName(), job.getJob_type(), job.getDescription(), job.getSalary());
+                savedJobDao.insert(sj);
                 Intent intent = new Intent(mContext, JobDetailActivity.class);
                 intent.putExtra("job", job);
                 mContext.startActivity(intent);
@@ -59,12 +70,13 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
         });
     }
 
+
     @Override
     public int getItemCount() {
         return jobArrayList.size();
     }
 
-    public static class JobViewHolder extends RecyclerView.ViewHolder{
+    public static class JobViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivLogo;
         public TextView tvTitle;
         public TextView tvCompany;
@@ -78,7 +90,7 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
             btnAdd = itemView.findViewById(R.id.btnAdd);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
-    }
 
+    }
 
 }

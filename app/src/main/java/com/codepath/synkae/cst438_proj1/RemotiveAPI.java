@@ -11,11 +11,23 @@ public interface RemotiveAPI {
     @GET("api/remote-jobs/categories")
     Call<Categories> getCategories();
 
-    @GET("api/remote-jobs?")
-    Call<JobSearch> searchJobs(
-            @Query("category") String category,
+    @GET("api/remote-jobs")
+    Call<JobSearch> searchJobsKeyword(
             @Query("search") String search,
             @Query("limit") Integer limit
     );
+
+    @GET("api/remote-jobs")
+    Call<JobSearch> searchJobsCompany(
+            @Query("company_name") String company,
+            @Query("limit") Integer limit
+    );
+
+    @GET("api/remote-jobs")
+    Call<JobSearch> searchJobsCategory(
+            @Query("category") String category,
+            @Query("limit") Integer limit
+    );
+
 
 }
