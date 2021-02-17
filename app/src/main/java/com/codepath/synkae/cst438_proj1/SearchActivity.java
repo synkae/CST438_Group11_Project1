@@ -121,13 +121,13 @@ public class SearchActivity extends AppCompatActivity{
 
 
     private void initRecyclerView(ArrayList<Job> jobList){
-        adapter = new JobRecycleAdapter(jobList, this);
+        adapter = new JobRecycleAdapter(jobList, tUserId, this);
         rvJobs.setHasFixedSize(true);
         rvJobs.setAdapter(adapter);
         rvJobs.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void getDatabase() {
+    public void getDatabase() {
         DAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DB_NAME)
                 .allowMainThreadQueries()
                 .build()

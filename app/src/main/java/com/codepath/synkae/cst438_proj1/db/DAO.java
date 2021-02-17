@@ -9,7 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.codepath.synkae.cst438_proj1.User;
-import com.codepath.synkae.cst438_proj1.models.SavedJobs;
+import com.codepath.synkae.cst438_proj1.models.Job;
 
 import java.util.List;
 
@@ -26,13 +26,13 @@ public interface DAO {
     void delete(User user);
 
     @Insert
-    void insert(SavedJobs...savedJobs);
+    void insert(Job...Job);
 
     @Update
-    void update(SavedJobs...savedJobs);
+    void update(Job...Job);
 
     @Delete
-    void delete(SavedJobs...savedJobs);
+    void delete(Job...Job);
 
     @Query("SELECT * FROM " + AppDatabase.USER_TABLE)
     List<User> getAllUsers();
@@ -44,7 +44,7 @@ public interface DAO {
     User getUserByUserId(int userId);
 
     @Query("SELECT * FROM " + AppDatabase.SAVEDJOBS_TABLE + " WHERE mUserId = :mUserId")
-    List<SavedJobs> getAllSavedJobsByUserId(int mUserId);
+    List<Job> getAllSavedJobsByUserId(int mUserId);
 
 
 }
