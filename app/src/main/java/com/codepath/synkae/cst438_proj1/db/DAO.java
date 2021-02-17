@@ -50,5 +50,10 @@ public interface DAO {
     @Query("DELETE FROM " + AppDatabase.SAVEDJOBS_TABLE +" WHERE saveJId = :saveJId")
     void deleteSjob(int saveJId);
 
+    @Delete
+    void deleteUserTable(User...users);
+
+    @Delete
+    void deleteAllSavedJobs(Job...jobs);
 
 }
