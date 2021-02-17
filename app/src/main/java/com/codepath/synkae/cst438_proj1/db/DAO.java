@@ -11,6 +11,7 @@ import androidx.room.Update;
 import com.codepath.synkae.cst438_proj1.User;
 import com.codepath.synkae.cst438_proj1.models.Job;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -45,6 +46,9 @@ public interface DAO {
 
     @Query("SELECT * FROM " + AppDatabase.SAVEDJOBS_TABLE + " WHERE mUserId = :mUserId")
     List<Job> getAllSavedJobsByUserId(int mUserId);
+
+    @Query("DELETE FROM " + AppDatabase.SAVEDJOBS_TABLE +" WHERE saveJId = :saveJId")
+    void deleteSjob(int saveJId);
 
 
 }
