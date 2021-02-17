@@ -28,10 +28,13 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
     private Context mContext;
     private int uid;
     private DAO DAO;
+    private String select;
 
-    public JobRecycleAdapter(ArrayList<Job> jobArrayList, int uid, Context context){
+    public JobRecycleAdapter(ArrayList<Job> jobArrayList, int uid, String select, Context context){
         this.jobArrayList = jobArrayList;
         mContext = context;
+        this.uid = uid;
+        this.select = select;
         DAO = Room.databaseBuilder(mContext, AppDatabase.class, AppDatabase.DB_NAME)
                 .allowMainThreadQueries()
                 .build()
@@ -68,15 +71,28 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
                 mContext.startActivity(intent);
             }
         });
-        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Job tJob = jobArrayList.get(position);
-                tJob.setMUserId(uid);
-                DAO.insert(tJob);
-                Toast.makeText(view.getContext(), "Job added to list!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (select.equals("search")){
+            holder.btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Job tJob = jobArrayList.get(position);
+                    tJob.setMUserId(uid);
+                    DAO.insert(tJob);
+                    Toast.makeText(view.getContext(), "Job added to list!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            holder.btnAdd.setText("Delete");
+            holder.btnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Job tJob = jobArrayList.get(position);
+                    DAO.deleteSjob(tJob.getSaveJId());
+                    Toast.makeText(view.getContext(), "Job deleted from list!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override

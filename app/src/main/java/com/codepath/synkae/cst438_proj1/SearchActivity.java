@@ -121,7 +121,7 @@ public class SearchActivity extends AppCompatActivity{
 
 
     private void initRecyclerView(ArrayList<Job> jobList){
-        adapter = new JobRecycleAdapter(jobList, tUserId, this);
+        adapter = new JobRecycleAdapter(jobList, tUserId, "search", this);
         rvJobs.setHasFixedSize(true);
         rvJobs.setAdapter(adapter);
         rvJobs.setLayoutManager(new LinearLayoutManager(this));
