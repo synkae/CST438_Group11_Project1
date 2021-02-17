@@ -45,7 +45,7 @@ public class ExampleInstrumentedTest {
                 .build()
                 .getDAO();
         Dao.deleteAllSavedJobs();
-        Dao.deleteUserTable();
+        Dao.deleteAllUsers();
         Dao.insert(new User("1", "password"));
         userArrayList = new ArrayList<User>();
         allCategories = new ArrayList<String>();
