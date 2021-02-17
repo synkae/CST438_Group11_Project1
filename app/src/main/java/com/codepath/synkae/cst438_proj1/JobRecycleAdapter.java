@@ -9,11 +9,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import com.bumptech.glide.Glide;
+import com.codepath.synkae.cst438_proj1.db.AppDatabase;
+import com.codepath.synkae.cst438_proj1.db.DAO;
 import com.codepath.synkae.cst438_proj1.models.Job;
 
 import java.util.ArrayList;
@@ -21,10 +26,16 @@ import java.util.ArrayList;
 public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.JobViewHolder> {
     private ArrayList<Job> jobArrayList;
     private Context mContext;
+    private int uid;
+    private DAO DAO;
 
-    public JobRecycleAdapter(ArrayList<Job> jobArrayList, Context context){
+    public JobRecycleAdapter(ArrayList<Job> jobArrayList, int uid, Context context){
         this.jobArrayList = jobArrayList;
         mContext = context;
+        DAO = Room.databaseBuilder(mContext, AppDatabase.class, AppDatabase.DB_NAME)
+                .allowMainThreadQueries()
+                .build()
+                .getDAO();
     }
 
     @NonNull
@@ -57,6 +68,15 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
                 mContext.startActivity(intent);
             }
         });
+        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Job tJob = jobArrayList.get(position);
+                tJob.setMUserId(uid);
+                DAO.insert(tJob);
+                Toast.makeText(view.getContext(), "Job added to list!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -79,6 +99,5 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
-
 
 }

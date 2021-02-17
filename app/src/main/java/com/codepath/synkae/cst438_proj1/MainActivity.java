@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SavedJobsActivity.class);
+                intent.putExtra(USER_ID_KEY, tUserId);
                 startActivity(intent);
             }
 
