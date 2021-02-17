@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.BroadcastReceiver;
 import android.os.Bundle;
 
 import com.codepath.synkae.cst438_proj1.db.AppDatabase;
@@ -18,8 +19,9 @@ public class SavedJobsActivity extends AppCompatActivity {
 
     private int tUserId;
     private RecyclerView SJLRview;
-    private JobRecycleAdapter adapter;
+    public JobRecycleAdapter adapter;
     private DAO DAO;
+    private BroadcastReceiver mReceiver;
 
 
 
@@ -53,4 +55,5 @@ public class SavedJobsActivity extends AppCompatActivity {
         SJLRview.setAdapter(adapter);
         SJLRview.setLayoutManager(new LinearLayoutManager(this));
     }
+
 }

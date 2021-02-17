@@ -22,6 +22,7 @@ import com.codepath.synkae.cst438_proj1.db.DAO;
 import com.codepath.synkae.cst438_proj1.models.Job;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.JobViewHolder> {
     private ArrayList<Job> jobArrayList;
@@ -35,10 +36,7 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
         mContext = context;
         this.uid = uid;
         this.select = select;
-        DAO = Room.databaseBuilder(mContext, AppDatabase.class, AppDatabase.DB_NAME)
-                .allowMainThreadQueries()
-                .build()
-                .getDAO();
+        getDatabase();
     }
 
     @NonNull
@@ -89,7 +87,7 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
                 public void onClick(View view) {
                     Job tJob = jobArrayList.get(position);
                     DAO.deleteSjob(tJob.getSaveJId());
-                    Toast.makeText(view.getContext(), "Job deleted from list!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext(), "Job deleted from list, please refresh for effect!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -114,6 +112,13 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
             btnAdd = itemView.findViewById(R.id.btnAdd);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
+    }
+
+    public void getDatabase() {
+        DAO = Room.databaseBuilder(mContext, AppDatabase.class, AppDatabase.DB_NAME)
+                .allowMainThreadQueries()
+                .build()
+                .getDAO();
     }
 
 }
