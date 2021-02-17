@@ -87,7 +87,9 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
                 public void onClick(View view) {
                     Job tJob = jobArrayList.get(position);
                     DAO.deleteSjob(tJob.getSaveJId());
-                    Toast.makeText(view.getContext(), "Job deleted from list, please refresh for effect!", Toast.LENGTH_SHORT).show();
+                    jobArrayList.remove(position);
+                    notifyDataSetChanged();
+                    Toast.makeText(view.getContext(), "Job deleted from list!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -120,5 +122,6 @@ public class JobRecycleAdapter extends RecyclerView.Adapter<JobRecycleAdapter.Jo
                 .build()
                 .getDAO();
     }
+
 
 }
