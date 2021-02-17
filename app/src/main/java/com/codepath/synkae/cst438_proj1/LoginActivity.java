@@ -64,8 +64,8 @@ public class LoginActivity extends AppCompatActivity {
                 checkUser = DAO.getUserByUsername(inputUn);
                 String created;
 
-                if (inputUn.equals("")||inputUn.equals("username")||inputPw.equals("")||inputPw.equals("password")){
-                    created = "Invalid Username/Password";
+                if (inputUn.equals("")||inputPw.equals("")){
+                    created = "You must enter a Username/Password";
                     toastMaker(created);
                 }
 
