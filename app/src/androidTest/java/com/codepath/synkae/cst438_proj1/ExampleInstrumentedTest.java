@@ -39,8 +39,9 @@ public class ExampleInstrumentedTest {
     private List<User> userArrayList;
     private ArrayList<String> allCategories;
     private List<Job> allJobs;
+
     @Before
-    public void init(){
+    public void init() {
         Dao = Room.databaseBuilder(InstrumentationRegistry.getInstrumentation().getTargetContext(), AppDatabase.class, AppDatabase.DB_NAME)
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
@@ -52,6 +53,8 @@ public class ExampleInstrumentedTest {
         userArrayList = new ArrayList<User>();
         allCategories = new ArrayList<String>();
         allJobs = new ArrayList<Job>();
+
+
 
         allCategories.add("software-dev");
         allCategories.add("customer-support");
@@ -81,25 +84,26 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void validUser(){
+    public void validUser() {
         userArrayList = Dao.getAllUsers();
         User test = new User("1", "password");
         boolean check = false;
-        for (User u : userArrayList){
-            if (u.getUsername().equals(test.getUsername()) && u.getPassword().equals(test.getPassword())){
+        for (User u : userArrayList) {
+            if (u.getUsername().equals(test.getUsername()) && u.getPassword().equals(test.getPassword())) {
                 check = true;
             }
         }
         assertTrue(check);
     }
+
     @Test
-    public void invalidUser(){
+    public void invalidUser() {
         userArrayList = Dao.getAllUsers();
         User actual = userArrayList.get(0);
         User test = new User("1", "wrongpass");
         boolean check = false;
-        for (User u : userArrayList){
-            if (u.getUsername().equals(test.getUsername()) && u.getPassword().equals(test.getPassword())){
+        for (User u : userArrayList) {
+            if (u.getUsername().equals(test.getUsername()) && u.getPassword().equals(test.getPassword())) {
                 check = true;
             }
         }
@@ -107,7 +111,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void checkCategories(){
+    public void checkCategories() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://remotive.io/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -121,13 +125,14 @@ public class ExampleInstrumentedTest {
 
                 ArrayList<Category> categoryArrayList = response.body().getCategoryList();
                 //for testing purposes
-                for (int i=0; i<categoryArrayList.size(); i++){
+                for (int i = 0; i < categoryArrayList.size(); i++) {
                     if (!categoryArrayList.get(i).getSlug().equals(allCategories.get(i))) {
                         check[0] = false;
                         break;
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<Categories> call, Throwable t) {
 
@@ -140,16 +145,45 @@ public class ExampleInstrumentedTest {
     public void checkEmptyInput() {
         String inputUsername = "";
         String inputPassword = "";
-        // User userEmpty = new User("", "");
-        boolean checkInput = false;
-        if(inputUsername == "" && inputPassword == "") {
-            checkInput = true;
+        boolean checkInput = true;
+        if (inputUsername == "" && inputPassword == "") {
+            checkInput = false;
         }
-        assertTrue(checkInput);
+        assertFalse(checkInput);
+    }
+
+    @Test
+    public void checkSingleEmptyInput() {
+        String inputUsername = "";
+        String inputPassword = "";
+        boolean checkInput = true;
+        if(inputUsername == "" || inputPassword == "") {
+            checkInput = false;
+        }
+        assertFalse(checkInput);
+    }
+
+    @Test
+    public void checkSavedJobsList() {
+        Job testJob = new Job(2, "www.examplejob.com", "exampleTitle", "software", "exampleCompany", "full time", "18/2/2021", "monterey", "70000", "description, working on app", "");
+        Job testJob2 = new Job(2, "www.examplejob.com", "exampleTitle", "software", "exampleCompany", "full time", "18/2/2021", "monterey", "70000", "description, working on app", "");
+        Dao.getAllSavedJobsByUserId(2);
+      //  boolean check = false;
+        for(Job tester : allJobs) {
+            if (testJob == testJob2) {
+               // check = true;
+            }
+        }
+
+        //other way to check if job is saved
+
+        // assertTrue(check);
+
     }
 
     @Test
     public void checkJobs(){
+
     }
 
 
