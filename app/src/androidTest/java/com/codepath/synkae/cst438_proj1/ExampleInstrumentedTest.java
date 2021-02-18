@@ -105,6 +105,7 @@ public class ExampleInstrumentedTest {
         }
         assertFalse(check);
     }
+
     @Test
     public void checkCategories(){
         Retrofit retrofit = new Retrofit.Builder()
@@ -133,6 +134,18 @@ public class ExampleInstrumentedTest {
             }
         });
         assertTrue(check[0]);
+    }
+
+    @Test
+    public void checkEmptyInput() {
+        String inputUsername = "";
+        String inputPassword = "";
+        // User userEmpty = new User("", "");
+        boolean checkInput = false;
+        if(inputUsername == "" && inputPassword == "") {
+            checkInput = true;
+        }
+        assertTrue(checkInput);
     }
 
     @Test
